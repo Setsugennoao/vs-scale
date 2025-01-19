@@ -1,14 +1,6 @@
-name: Lint Python code with Ruff
+name: Test Python code
 
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - '**.py'
-  pull_request:
-    paths:
-      - '**.py'
+on: [push, pull_request]
 
 jobs:
   windows:
@@ -35,7 +27,8 @@ jobs:
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
 
-      - name: Running ruff
-        run: |
-          ruff check vsscale
-          ruff check tests
+      - name: Running tests
+        run: pytest --cov-report=term-missing:skip-covered --cov=vsscale tests
+
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2.3.1
